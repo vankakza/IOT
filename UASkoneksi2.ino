@@ -80,31 +80,7 @@ void loop() {
     }
 
     sendData(temperature, humidity, windSpeed);
-  }else if (interruptCounter = 0) {
-    Serial.print("Data tidak terbaca dengan baik");
-    Serial.print("Wind Speed: 0 ");
-    Serial.print(windSpeed);
-    Serial.println(" m/s");
-
-    float temperature = dht.readTemperature();
-    float humidity = dht.readHumidity();
-
-    Serial.print("Temperature: 0 ");
-    Serial.print(temperature);
-    Serial.print(" °C, Humidity: 0");
-    Serial.print(humidity);
-    Serial.println(" %");
-
-    // Nyalakan buzzer jika kecepatan angin lebih dari 5 m/s
-    if (windSpeed > 3.5) {
-      digitalWrite(buzzerPin, HIGH);
-      delay(500);
-      digitalWrite(buzzerPin, LOW);
-    }
-
-    sendData(temperature, humidity, windSpeed);
-  delay(1000);
-}
+  }
 }
 void sendData(float temperature, float humidity, float windSpeed) {
   if (WiFi.status() == WL_CONNECTED) {
