@@ -55,7 +55,22 @@ void loop() {
     sendStatusUpdate();
     lastUpdateTime = millis();
   }
-  if (interruptCounter > 0) {
+  if (interruptCounter == 0){
+    float temperature = dht.readTemperature();
+    float humidity = dht.readHumidity();
+
+    windSpeed = 0;
+
+    Serial.print("Wind Speed: ");
+    Serial.print(windSpeed);
+
+    if (windSpeed == 0 ) {
+      digitalWrite(buzzerPin, HIGH);
+      delay(500);
+      digitalWrite(buzzerPin, LOW);
+    }
+    sendData(temperature, humidity, windSpeed);
+  }else if (interruptCounter > 0) {
     windSpeed = (float)interruptCounter / 2.0;
     interruptCounter = 0;
 
@@ -81,6 +96,8 @@ void loop() {
 
     sendData(temperature, humidity, windSpeed);
   }
+
+  delay(1000);
 }
 void sendData(float temperature, float humidity, float windSpeed) {
   if (WiFi.status() == WL_CONNECTED) {
