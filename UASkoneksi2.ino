@@ -1,30 +1,30 @@
 #include <WiFi.h>
 #include <DHT.h>
-#include <HTTPClient.h>
+#include <HTTPClient.h> //mengirim data ke server
 
-const char* ssid = "wipoll";               // Nama jaringan WiFi
-const char* password = "vanka123";         // Kata sandi jaringan WiFi
-const char* server = "te20.project-anemo.app";
-const char* serverUrl = "https://te20.project-anemo.app/api/device/status";
-// Modify the following variables with your ESP32 device ID
-const String deviceId = "esp32";
-unsigned long lastUpdateTime = 0;
-const unsigned long updateInterval = 30000; // Update interval in milliseconds (30 seconds)
+const char* ssid = "wipoll";                //Nama wifi
+const char* password = "vanka123";          //pw wifi
+const char* server = "te20.project-anemo.app"; //server
+const char* serverUrl = "https://te20.project-anemo.app/api/device/status"; 
 
-const int anemometerPin = 32;               // Pin yang terhubung dengan anemometer
-volatile int interruptCounter = 0;          // Counter interupsi
-float windSpeed = 0.0;                      // Kecepatan angin (m/s)
+const String deviceId = "esp32";            //nama device
+unsigned long lastUpdateTime = 0;           //inisialisasi nilai awal
+const unsigned long updateInterval = 30000; //akan mengupdate koneksi dalam waktu 30 detik
 
-const int dhtPin = 25;                      // Pin yang terhubung dengan sensor DHT22
-const int dhtType = DHT22;                  // Tipe sensor DHT22
+const int anemometerPin = 32;               //pin anemo
+volatile int interruptCounter = 0;          //counter untuk nilai kecepatan angin
+float windSpeed = 0.0;                      //Kecepatan angin (m/s)
 
-const int buzzerPin = 26;                   // Pin yang terhubung dengan buzzer
+const int dhtPin = 25;                      //pin DH22
+const int dhtType = DHT22;                  //Tipe sensor dht
 
-WiFiClient client;
+const int buzzerPin = 26;                   //Pin buzzer
+
+WiFiClient client;                          
 DHT dht(dhtPin, dhtType);
 
 void IRAM_ATTR anemometerInterrupt() {
-  interruptCounter++;
+  interruptCounter++;                       //menghitung jumlah interupt (perubahan nilai)
 }
 
 void setup() {
@@ -50,11 +50,16 @@ void setup() {
 }
 
 void loop() {
-  // Check if it's time to send a status update
+  // mengecek apakah sudah waktunya mengirim status update
   if (millis() - lastUpdateTime >= updateInterval) {
     sendStatusUpdate();
     lastUpdateTime = millis();
   }
+<<<<<<< HEAD
+
+  //jika tidak ada perubahan nilai pada anemo, maka tuliskan kecepatan = 0
+=======
+>>>>>>> 6162c003505b5411ba1486abc0e1bbf9d5093c7c
   if (interruptCounter == 0){
     float temperature = dht.readTemperature();
     float humidity = dht.readHumidity();
@@ -70,6 +75,10 @@ void loop() {
       digitalWrite(buzzerPin, LOW);
     }
     sendData(temperature, humidity, windSpeed);
+<<<<<<< HEAD
+    //jika ada perubahan nilai pada anemo, masukan nilai kecepatan angin
+=======
+>>>>>>> 6162c003505b5411ba1486abc0e1bbf9d5093c7c
   }else if (interruptCounter > 0) {
     windSpeed = (float)interruptCounter / 2.0;
     interruptCounter = 0;
@@ -99,6 +108,11 @@ void loop() {
 
   delay(1000);
 }
+<<<<<<< HEAD
+
+//fungsi untuk mengirim data output sensor
+=======
+>>>>>>> 6162c003505b5411ba1486abc0e1bbf9d5093c7c
 void sendData(float temperature, float humidity, float windSpeed) {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
@@ -119,6 +133,7 @@ void sendData(float temperature, float humidity, float windSpeed) {
   }
 }
 
+//mengirim konektivitas esp32 online/tidak
 void sendStatusUpdate() {
 if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
