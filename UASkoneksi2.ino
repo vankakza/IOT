@@ -55,11 +55,8 @@ void loop() {
     sendStatusUpdate();
     lastUpdateTime = millis();
   }
-<<<<<<< HEAD
 
   //jika tidak ada perubahan nilai pada anemo, maka tuliskan kecepatan = 0
-=======
->>>>>>> 6162c003505b5411ba1486abc0e1bbf9d5093c7c
   if (interruptCounter == 0){
     float temperature = dht.readTemperature();
     float humidity = dht.readHumidity();
@@ -75,10 +72,8 @@ void loop() {
       digitalWrite(buzzerPin, LOW);
     }
     sendData(temperature, humidity, windSpeed);
-<<<<<<< HEAD
     //jika ada perubahan nilai pada anemo, masukan nilai kecepatan angin
-=======
->>>>>>> 6162c003505b5411ba1486abc0e1bbf9d5093c7c
+
   }else if (interruptCounter > 0) {
     windSpeed = (float)interruptCounter / 2.0;
     interruptCounter = 0;
@@ -97,7 +92,7 @@ void loop() {
     Serial.println(" %");
 
     // Nyalakan buzzer jika kecepatan angin lebih dari 5 m/s
-    if (windSpeed > 3.5) {
+    if (windSpeed > 15) {
       digitalWrite(buzzerPin, HIGH);
       delay(500);
       digitalWrite(buzzerPin, LOW);
@@ -108,11 +103,9 @@ void loop() {
 
   delay(1000);
 }
-<<<<<<< HEAD
+
 
 //fungsi untuk mengirim data output sensor
-=======
->>>>>>> 6162c003505b5411ba1486abc0e1bbf9d5093c7c
 void sendData(float temperature, float humidity, float windSpeed) {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
